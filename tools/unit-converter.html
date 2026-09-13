@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit Converter - Length, Weight, Temperature Free Tool</title>
+<meta name="description" content="Convert length, weight and temperature units instantly. Free, no signup.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Unit Converter</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Unit Converter</h1>
+
+    <div class="field">
+      <label for="category">Category</label>
+      <select id="category" onchange="populateUnits()">
+        <option value="length">Length</option>
+        <option value="weight">Weight</option>
+        <option value="temperature">Temperature</option>
+      </select>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="value">Value</label>
+        <input type="number" id="value" value="1">
+      </div>
+      <div class="field">
+        <label for="from">From</label>
+        <select id="from"></select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="to">To</label>
+      <select id="to"></select>
+    </div>
+    <button class="primary" onclick="convertUnit()">Convert</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="currency-converter.html">Currency Converter</a>
+    <a href="bmi-calculator.html">BMI Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>About This Converter</h2>
+    <p>This tool converts between common units of length, weight, and temperature using standard, internationally recognized conversion factors (for example, 1 mile = 1609.34 meters, 1 pound = 0.453592 kilograms). Temperature conversions use the standard Celsius, Fahrenheit, and Kelvin formulas rather than a simple multiplication factor, since temperature scales have different zero points.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>How accurate are the conversions?</h3>
+      <p>Conversions use standard, widely accepted conversion constants and are accurate to four decimal places, suitable for everyday, educational, and most professional uses.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is temperature conversion handled differently?</h3>
+      <p>Celsius, Fahrenheit, and Kelvin scales have different zero points and step sizes, so converting between them requires a formula (e.g., °F = °C × 9/5 + 32) rather than a simple multiplier used for length or weight.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I add more unit categories?</h3>
+      <p>We plan to add volume, speed, and area conversions in future updates based on user demand.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+const UNITS = {
+  length: {
+    meter: 1, kilometer: 1000, centimeter: 0.01, millimeter: 0.001,
+    mile: 1609.34, yard: 0.9144, foot: 0.3048, inch: 0.0254
+  },
+  weight: {
+    kilogram: 1, gram: 0.001, milligram: 0.000001,
+    pound: 0.453592, ounce: 0.0283495, ton: 1000
+  },
+  temperature: {} // handled specially
+};
+
+const fromSel = document.getElementById('from');
+const toSel = document.getElementById('to');
+const categorySel = document.getElementById('category');
+
+function populateUnits() {
+  const cat = categorySel.value;
+  fromSel.innerHTML = '';
+  toSel.innerHTML = '';
+
+  if (cat === 'temperature') {
+    ['Celsius', 'Fahrenheit', 'Kelvin'].forEach(u => {
+      fromSel.innerHTML += `<option value="${u}">${u}</option>`;
+      toSel.innerHTML += `<option value="${u}">${u}</option>`;
+    });
+    toSel.value = 'Fahrenheit';
+  } else {
+    Object.keys(UNITS[cat]).forEach(u => {
+      fromSel.innerHTML += `<option value="${u}">${u}</option>`;
+      toSel.innerHTML += `<option value="${u}">${u}</option>`;
+    });
+    toSel.selectedIndex = 1;
+  }
+}
+populateUnits();
+
+function convertTemperature(value, from, to) {
+  let celsius;
+  if (from === 'Celsius') celsius = value;
+  else if (from === 'Fahrenheit') celsius = (value - 32) * 5/9;
+  else celsius = value - 273.15;
+
+  if (to === 'Celsius') return celsius;
+  else if (to === 'Fahrenheit') return celsius * 9/5 + 32;
+  else return celsius + 273.15;
+}
+
+function convertUnit() {
+  const cat = categorySel.value;
+  const value = parseFloat(document.getElementById('value').value);
+  const from = fromSel.value;
+  const to = toSel.value;
+  const box = document.getElementById('result');
+
+  if (isNaN(value)) {
+    box.className = 'result show';
+    box.innerHTML = 'Please enter a valid number.';
+    return;
+  }
+
+  let converted;
+  if (cat === 'temperature') {
+    converted = convertTemperature(value, from, to);
+  } else {
+    const baseValue = value * UNITS[cat][from];
+    converted = baseValue / UNITS[cat][to];
+  }
+
+  box.className = 'result show';
+  box.innerHTML = `${value} ${from} = <strong>${converted.toFixed(4)} ${to}</strong>`;
+}
+</script>
+
+</body>
+</html>

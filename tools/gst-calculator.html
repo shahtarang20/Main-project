@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GST Calculator - Add or Remove GST Free Tool</title>
+<meta name="description" content="Calculate GST amount, add GST to a price, or remove GST from a price instantly. Free, no signup.">
+<meta property="og:title" content="GST Calculator - QuickCalc">
+<meta property="og:description" content="Add or remove GST from any amount instantly, free.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"GST Calculator","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / GST Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>GST Calculator</h1>
+    <p>Add GST to a base price, or find the base price and GST amount from a total price.</p>
+
+    <div class="field">
+      <label for="mode">Calculation Type</label>
+      <select id="mode">
+        <option value="add">Add GST to Amount</option>
+        <option value="remove">Remove GST from Total (GST-inclusive)</option>
+      </select>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" placeholder="e.g. 1000">
+      </div>
+      <div class="field">
+        <label for="rate">GST Rate (%)</label>
+        <select id="rate">
+          <option value="5">5%</option>
+          <option value="12">12%</option>
+          <option value="18" selected>18%</option>
+          <option value="28">28%</option>
+        </select>
+      </div>
+    </div>
+    <button class="primary" onclick="calculateGST()">Calculate</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="discount-calculator.html">Discount Calculator</a>
+    <a href="salary-calculator.html">Salary Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How GST Calculation Works</h2>
+    <p>GST (Goods and Services Tax) is added to the base price of goods and services in India at rates typically of 5%, 12%, 18%, or 28% depending on the item category. To add GST, multiply the base amount by the rate and add it to the base. To remove GST from a GST-inclusive total, divide the total by (1 + rate/100) to find the base price, then subtract that from the total to find the GST portion.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What's the difference between CGST, SGST, and IGST?</h3>
+      <p>For intra-state transactions, GST is split equally into CGST (Central) and SGST (State). For inter-state transactions, IGST applies as a single combined tax. This calculator shows the total GST amount only — check with your accountant for the CGST/SGST split.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Which GST rate should I use?</h3>
+      <p>GST rates vary by product/service category as set by the GST Council. Check the official GST rate schedule for your specific item.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this suitable for GST return filing?</h3>
+      <p>This tool is for quick estimation only. For actual GST returns and compliance, use official GST portal tools or consult a tax professional.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calculateGST() {
+  const mode = document.getElementById('mode').value;
+  const amount = parseFloat(document.getElementById('amount').value);
+  const rate = parseFloat(document.getElementById('rate').value);
+  const box = document.getElementById('result');
+
+  if (!amount || amount <= 0) {
+    box.className = 'result show';
+    box.innerHTML = 'Please enter a valid amount.';
+    return;
+  }
+
+  if (mode === 'add') {
+    const gstAmount = amount * (rate / 100);
+    const total = amount + gstAmount;
+    box.className = 'result show';
+    box.innerHTML = `GST Amount: ${gstAmount.toFixed(2)}<br><strong>Total Price: ${total.toFixed(2)}</strong>`;
+  } else {
+    const base = amount / (1 + rate / 100);
+    const gstAmount = amount - base;
+    box.className = 'result show';
+    box.innerHTML = `Base Price: ${base.toFixed(2)}<br>GST Amount: ${gstAmount.toFixed(2)}`;
+  }
+}
+</script>
+
+</body>
+</html>

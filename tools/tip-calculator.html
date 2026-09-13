@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tip Calculator - Split Bill & Calculate Tip Free</title>
+<meta name="description" content="Calculate the tip amount and split the bill among any number of people instantly. Free, no signup.">
+<meta property="og:title" content="Tip Calculator - QuickCalc">
+<meta property="og:description" content="Calculate tip and split any bill instantly, free.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Tip Calculator","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Tip Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Tip Calculator</h1>
+    <p>Calculate the tip amount and split the total bill among any number of people.</p>
+
+    <div class="field">
+      <label for="bill">Bill Amount</label>
+      <input type="number" id="bill" placeholder="e.g. 80">
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="tip">Tip Percentage (%)</label>
+        <input type="number" id="tip" value="15">
+      </div>
+      <div class="field">
+        <label for="people">Number of People</label>
+        <input type="number" id="people" value="1" min="1">
+      </div>
+    </div>
+    <button class="primary" onclick="calculateTip()">Calculate</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="discount-calculator.html">Discount Calculator</a>
+    <a href="percentage-calculator.html">Percentage Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How Tipping Works</h2>
+    <p>This calculator finds the tip amount by multiplying your bill by the tip percentage, then divides the total (bill + tip) evenly among the number of people specified, giving you the per-person amount to pay. Standard tipping norms vary by country and service type (e.g., 15-20% at restaurants in the US, often optional or included as a service charge elsewhere) — adjust the percentage to match local custom.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What's a typical tip percentage?</h3>
+      <p>In the US, 15-20% is common for restaurant service. In many other countries, tipping norms are lower or a service charge may already be included in the bill — check local custom before tipping.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I split unevenly among people?</h3>
+      <p>This calculator splits the total evenly. For itemized or uneven splits based on what each person ordered, you'd need to calculate each person's share manually.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calculateTip() {
+  const bill = parseFloat(document.getElementById('bill').value);
+  const tipPercent = parseFloat(document.getElementById('tip').value);
+  const people = parseInt(document.getElementById('people').value) || 1;
+  const box = document.getElementById('result');
+
+  if (!bill || bill <= 0 || tipPercent == null || tipPercent < 0 || people < 1) {
+    box.className = 'result show';
+    box.innerHTML = 'Please enter valid values.';
+    return;
+  }
+
+  const tipAmount = bill * (tipPercent / 100);
+  const total = bill + tipAmount;
+  const perPerson = total / people;
+
+  box.className = 'result show';
+  box.innerHTML = `
+    Tip Amount: ${tipAmount.toFixed(2)}<br>
+    Total Bill: ${total.toFixed(2)}<br>
+    <strong>Per Person: ${perPerson.toFixed(2)}</strong>
+  `;
+}
+</script>
+
+</body>
+</html>

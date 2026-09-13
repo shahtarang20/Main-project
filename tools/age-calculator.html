@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Age Calculator - Find Your Exact Age Free</title>
+<meta name="description" content="Calculate your exact age in years, months and days from your date of birth. Free, instant, no signup.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Age Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Age Calculator</h1>
+    <p>Find your exact age in years, months and days.</p>
+
+    <div class="field">
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob">
+    </div>
+    <button class="primary" onclick="calculateAge()">Calculate Age</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="bmi-calculator.html">BMI Calculator</a>
+    <a href="percentage-calculator.html">Percentage Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How Age Is Calculated</h2>
+    <p>This tool calculates your exact age by comparing your date of birth to today's date, breaking down the difference into complete years, months, and days rather than a rough estimate. It correctly accounts for varying month lengths and leap years, so the result reflects your precise age at this moment.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Does this account for leap years?</h3>
+      <p>Yes — the calculation uses actual calendar dates, so leap years and varying month lengths are automatically handled correctly.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I calculate age as of a future or past date instead of today?</h3>
+      <p>Currently this tool compares your date of birth to today's date only. A "calculate as of custom date" option may be added in the future.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is my date of birth stored anywhere?</h3>
+      <p>No. The date you enter is processed entirely in your browser and is never sent to or stored on any server.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calculateAge() {
+  const dobInput = document.getElementById('dob').value;
+  const resultBox = document.getElementById('result');
+
+  if (!dobInput) {
+    resultBox.className = 'result show';
+    resultBox.innerHTML = 'Please select your date of birth.';
+    return;
+  }
+
+  const dob = new Date(dobInput);
+  const today = new Date();
+
+  if (dob > today) {
+    resultBox.className = 'result show';
+    resultBox.innerHTML = 'Date of birth cannot be in the future.';
+    return;
+  }
+
+  let years = today.getFullYear() - dob.getFullYear();
+  let months = today.getMonth() - dob.getMonth();
+  let days = today.getDate() - dob.getDate();
+
+  if (days < 0) {
+    months--;
+    const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  resultBox.className = 'result show';
+  resultBox.innerHTML = `You are <strong>${years} years, ${months} months, ${days} days</strong> old.`;
+}
+</script>
+
+</body>
+</html>

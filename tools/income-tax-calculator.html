@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Income Tax Calculator (India, New Regime) - Free Tool</title>
+<meta name="description" content="Estimate your income tax liability under India's new tax regime FY 2025-26. Free, instant, no signup.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Income Tax Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Income Tax Calculator</h1>
+    <p>Estimate your tax under India's new tax regime (FY 2025-26). For informational purposes only — consult a tax advisor for filing.</p>
+
+    <div class="field">
+      <label for="income">Annual Taxable Income</label>
+      <input type="number" id="income" placeholder="e.g. 1200000">
+    </div>
+    <button class="primary" onclick="calculateTax()">Calculate Tax</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="emi-calculator.html">EMI Calculator</a>
+    <a href="compound-interest-calculator.html">Compound Interest Calculator</a>
+    <a href="salary-calculator.html">Salary Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How This Calculator Works</h2>
+    <p>This tool estimates tax under India's new (default) tax regime for FY 2025-26, which uses simplified slabs without most deductions and exemptions available under the old regime. Income up to ₹7,00,000 is effectively tax-free due to the rebate under Section 87A, and a 4% Health & Education Cess is added on top of the computed tax. Tax slabs and rebates are set by the government and can change each financial year — always check the latest notification from the Income Tax Department or consult a tax professional before filing.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Does this include deductions like 80C or HRA?</h3>
+      <p>No — the new regime this calculator uses generally does not allow most common deductions. If you're on the old regime with deductions, your actual liability will differ from this estimate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this calculator only for India?</h3>
+      <p>Yes, currently this tool is built around India's new tax regime slabs. We plan to add calculators for other countries in the future.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this legally binding or official?</h3>
+      <p>No. This is an educational estimate only. Please refer to official government sources or a qualified chartered accountant for actual tax filing.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calculateTax() {
+  const income = parseFloat(document.getElementById('income').value);
+  const resultBox = document.getElementById('result');
+
+  if (!income || income <= 0) {
+    resultBox.className = 'result show';
+    resultBox.innerHTML = 'Please enter a valid income amount.';
+    return;
+  }
+
+  const slabs = [
+    { upto: 300000, rate: 0 },
+    { upto: 700000, rate: 0.05 },
+    { upto: 1000000, rate: 0.10 },
+    { upto: 1200000, rate: 0.15 },
+    { upto: 1500000, rate: 0.20 },
+    { upto: Infinity, rate: 0.30 }
+  ];
+
+  let tax = 0;
+  let lastLimit = 0;
+  for (const slab of slabs) {
+    if (income > lastLimit) {
+      const taxableInSlab = Math.min(income, slab.upto) - lastLimit;
+      tax += taxableInSlab * slab.rate;
+      lastLimit = slab.upto;
+    } else {
+      break;
+    }
+  }
+
+  if (income <= 700000) tax = 0;
+
+  const cess = tax * 0.04;
+  const totalTax = tax + cess;
+
+  resultBox.className = 'result show';
+  resultBox.innerHTML = `
+    Tax before cess: ₹${tax.toFixed(2)}<br>
+    Health & Education Cess (4%): ₹${cess.toFixed(2)}<br>
+    Total Tax Payable: ₹${totalTax.toFixed(2)}
+  `;
+}
+</script>
+
+</body>
+</html>

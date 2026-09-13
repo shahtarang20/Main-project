@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salary / Take-Home Pay Calculator (India) - Free Tool</title>
+<meta name="description" content="Calculate your take-home salary from CTC after tax, PF and other standard deductions (India). Free, instant, no signup.">
+<meta property="og:title" content="Salary Calculator - QuickCalc">
+<meta property="og:description" content="Estimate your monthly take-home pay from CTC, instantly and free.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Salary Calculator","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Salary Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Salary / Take-Home Pay Calculator</h1>
+    <p>Estimate your monthly take-home pay from your annual CTC (Cost to Company), based on typical Indian salary structures.</p>
+
+    <div class="field">
+      <label for="ctc">Annual CTC</label>
+      <input type="number" id="ctc" placeholder="e.g. 1200000">
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="pfpercent">Employee PF Contribution (%)</label>
+        <input type="number" id="pfpercent" value="12" step="0.1">
+      </div>
+      <div class="field">
+        <label for="otherdeductions">Other Monthly Deductions</label>
+        <input type="number" id="otherdeductions" value="0">
+      </div>
+    </div>
+    <button class="primary" onclick="calculateSalary()">Calculate Take-Home</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="income-tax-calculator.html">Income Tax Calculator</a>
+    <a href="gst-calculator.html">GST Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How This Estimate Works</h2>
+    <p>CTC (Cost to Company) includes your base salary plus employer contributions and benefits, which are not part of your actual take-home pay. This calculator applies a simplified model: it estimates a basic salary portion of CTC, deducts employee provident fund (PF) contribution, applies an approximate income tax based on our tax calculator's slabs, and subtracts any other deductions you specify, to arrive at an estimated monthly in-hand salary.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Why is my actual take-home different from this estimate?</h3>
+      <p>Actual salary structures vary widely between companies — components like HRA, special allowances, gratuity, bonuses, and professional tax differ by employer and city. This tool provides a general approximation, not an exact payslip calculation.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this include professional tax?</h3>
+      <p>No — professional tax varies by Indian state (typically ₹200/month or less) and is not included in this estimate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What PF percentage should I use?</h3>
+      <p>The standard employee PF contribution in India is 12% of basic salary. Check your payslip or HR policy for your exact contribution rate.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function estimateTax(income) {
+  const slabs = [
+    { upto: 300000, rate: 0 },
+    { upto: 700000, rate: 0.05 },
+    { upto: 1000000, rate: 0.10 },
+    { upto: 1200000, rate: 0.15 },
+    { upto: 1500000, rate: 0.20 },
+    { upto: Infinity, rate: 0.30 }
+  ];
+  if (income <= 700000) return 0;
+  let tax = 0, lastLimit = 0;
+  for (const slab of slabs) {
+    if (income > lastLimit) {
+      tax += (Math.min(income, slab.upto) - lastLimit) * slab.rate;
+      lastLimit = slab.upto;
+    } else break;
+  }
+  return tax * 1.04;
+}
+
+function calculateSalary() {
+  const ctc = parseFloat(document.getElementById('ctc').value);
+  const pfPercent = parseFloat(document.getElementById('pfpercent').value) || 0;
+  const otherDeductions = parseFloat(document.getElementById('otherdeductions').value) || 0;
+  const box = document.getElementById('result');
+
+  if (!ctc || ctc <= 0) {
+    box.className = 'result show';
+    box.innerHTML = 'Please enter a valid CTC amount.';
+    return;
+  }
+
+  const basicSalary = ctc * 0.5;
+  const annualPF = basicSalary * (pfPercent / 100);
+  const annualTax = estimateTax(ctc);
+  const annualTakeHome = ctc - annualPF - annualTax - (otherDeductions * 12);
+  const monthlyTakeHome = annualTakeHome / 12;
+
+  box.className = 'result show';
+  box.innerHTML = `
+    Estimated Annual PF: ₹${annualPF.toFixed(2)}<br>
+    Estimated Annual Tax: ₹${annualTax.toFixed(2)}<br>
+    <strong>Estimated Monthly Take-Home: ₹${monthlyTakeHome.toFixed(2)}</strong>
+  `;
+}
+</script>
+
+</body>
+</html>

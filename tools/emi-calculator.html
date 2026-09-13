@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMI Calculator - Calculate Loan Monthly Installment Free</title>
+<meta name="description" content="Free EMI calculator to compute your loan's monthly installment, total interest and total payment instantly.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / EMI Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>EMI Calculator</h1>
+    <p>Calculate your monthly loan installment (EMI) for home, car or personal loans.</p>
+
+    <div class="field">
+      <label for="principal">Loan Amount</label>
+      <input type="number" id="principal" placeholder="e.g. 500000">
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="rate">Annual Interest Rate (%)</label>
+        <input type="number" id="rate" placeholder="e.g. 8.5" step="0.01">
+      </div>
+      <div class="field">
+        <label for="tenure">Tenure (Years)</label>
+        <input type="number" id="tenure" placeholder="e.g. 5">
+      </div>
+    </div>
+    <button class="primary" onclick="calculateEMI()">Calculate EMI</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="compound-interest-calculator.html">Compound Interest Calculator</a>
+    <a href="income-tax-calculator.html">Income Tax Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How EMI Is Calculated</h2>
+    <p>EMI (Equated Monthly Installment) is the fixed amount you pay each month toward a loan until it's fully repaid. It's calculated using the formula EMI = P × r × (1+r)^n / ((1+r)^n − 1), where P is the loan principal, r is the monthly interest rate (annual rate ÷ 12 ÷ 100), and n is the total number of monthly installments (loan tenure in years × 12). Each EMI payment includes both principal repayment and interest, with the interest portion typically higher in early months and gradually decreasing over the loan term.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Does a higher tenure always mean I pay more overall?</h3>
+      <p>Yes — while a longer tenure lowers your monthly EMI, it increases the total interest paid over the life of the loan because interest accrues for a longer period.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this EMI calculator accurate for all loan types?</h3>
+      <p>It works for standard fixed-rate loans such as home, car, and personal loans. Loans with floating rates, processing fees, or prepayment penalties may have a different effective cost — check with your lender for exact figures.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I use this for any currency?</h3>
+      <p>Yes, the formula is currency-independent — simply enter your loan amount in your local currency and the result will be in the same currency.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calculateEMI() {
+  const p = parseFloat(document.getElementById('principal').value);
+  const annualRate = parseFloat(document.getElementById('rate').value);
+  const years = parseFloat(document.getElementById('tenure').value);
+  const resultBox = document.getElementById('result');
+
+  if (!p || !annualRate || !years || p <= 0 || annualRate <= 0 || years <= 0) {
+    resultBox.className = 'result show';
+    resultBox.innerHTML = 'Please enter valid positive numbers in all fields.';
+    return;
+  }
+
+  const r = annualRate / 12 / 100;
+  const n = years * 12;
+  const emi = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const totalPayment = emi * n;
+  const totalInterest = totalPayment - p;
+
+  resultBox.className = 'result show';
+  resultBox.innerHTML = `
+    Monthly EMI: ${emi.toFixed(2)}<br>
+    Total Interest: ${totalInterest.toFixed(2)}<br>
+    Total Payment: ${totalPayment.toFixed(2)}
+  `;
+}
+</script>
+
+</body>
+</html>

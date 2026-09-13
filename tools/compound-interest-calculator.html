@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compound Interest Calculator - Free Investment Growth Tool</title>
+<meta name="description" content="Calculate how your investment grows with compound interest. Free, instant, no signup.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Compound Interest Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Compound Interest Calculator</h1>
+    <p>See how your money grows over time with compound interest.</p>
+
+    <div class="field">
+      <label for="principal">Initial Investment</label>
+      <input type="number" id="principal" placeholder="e.g. 10000">
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="rate">Annual Interest Rate (%)</label>
+        <input type="number" id="rate" placeholder="e.g. 7" step="0.01">
+      </div>
+      <div class="field">
+        <label for="years">Duration (Years)</label>
+        <input type="number" id="years" placeholder="e.g. 10">
+      </div>
+    </div>
+    <div class="field">
+      <label for="compounds">Compounding Frequency</label>
+      <select id="compounds">
+        <option value="1">Annually</option>
+        <option value="2">Semi-Annually</option>
+        <option value="4">Quarterly</option>
+        <option value="12" selected>Monthly</option>
+        <option value="365">Daily</option>
+      </select>
+    </div>
+    <button class="primary" onclick="calculateCI()">Calculate</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="emi-calculator.html">EMI Calculator</a>
+    <a href="income-tax-calculator.html">Income Tax Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How Compound Interest Works</h2>
+    <p>Compound interest is interest calculated on both the initial principal and the accumulated interest from previous periods — often described as "interest on interest." The formula used here is A = P(1 + r/n)^(nt), where P is the principal, r is the annual interest rate, n is the number of times interest compounds per year, and t is the time in years. The more frequently interest compounds, the faster your investment grows.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What compounding frequency should I choose?</h3>
+      <p>This depends on your actual investment or account — banks and funds typically state whether interest compounds daily, monthly, quarterly, or annually. Choose the option that matches your real product for the most accurate estimate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does more frequent compounding produce a higher return?</h3>
+      <p>With more frequent compounding, interest is added to the principal more often, so each subsequent interest calculation is based on a slightly larger balance — leading to marginally higher overall growth compared to less frequent compounding at the same nominal rate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this account for taxes or fees?</h3>
+      <p>No — this calculator shows gross growth based on the rate you enter. Real-world returns may be reduced by taxes, account fees, or inflation.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calculateCI() {
+  const p = parseFloat(document.getElementById('principal').value);
+  const annualRate = parseFloat(document.getElementById('rate').value);
+  const years = parseFloat(document.getElementById('years').value);
+  const n = parseFloat(document.getElementById('compounds').value);
+  const resultBox = document.getElementById('result');
+
+  if (!p || !annualRate || !years || p <= 0 || annualRate <= 0 || years <= 0) {
+    resultBox.className = 'result show';
+    resultBox.innerHTML = 'Please enter valid positive numbers in all fields.';
+    return;
+  }
+
+  const r = annualRate / 100;
+  const amount = p * Math.pow(1 + r / n, n * years);
+  const interestEarned = amount - p;
+
+  resultBox.className = 'result show';
+  resultBox.innerHTML = `
+    Future Value: ${amount.toFixed(2)}<br>
+    Interest Earned: ${interestEarned.toFixed(2)}
+  `;
+}
+</script>
+
+</body>
+</html>

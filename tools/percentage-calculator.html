@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percentage Calculator - Free Online Tool</title>
+<meta name="description" content="Calculate percentages, percentage increase and decrease instantly. Free, no signup.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Percentage Calculator</nav>
+
+<main class="container">
+
+  <div class="card">
+    <h1>Percentage Calculator</h1>
+
+    <h2>What is X% of Y?</h2>
+    <div class="grid-2">
+      <div class="field">
+        <label>Percentage (%)</label>
+        <input type="number" id="p1">
+      </div>
+      <div class="field">
+        <label>Of Value</label>
+        <input type="number" id="v1">
+      </div>
+    </div>
+    <button class="primary" onclick="calc1()">Calculate</button>
+    <div class="result" id="result1"></div>
+  </div>
+
+  <div class="card">
+    <h2>X is what % of Y?</h2>
+    <div class="grid-2">
+      <div class="field">
+        <label>Value X</label>
+        <input type="number" id="x2">
+      </div>
+      <div class="field">
+        <label>Value Y</label>
+        <input type="number" id="y2">
+      </div>
+    </div>
+    <button class="primary" onclick="calc2()">Calculate</button>
+    <div class="result" id="result2"></div>
+  </div>
+
+  <div class="card">
+    <h2>Percentage Increase/Decrease</h2>
+    <div class="grid-2">
+      <div class="field">
+        <label>From Value</label>
+        <input type="number" id="from3">
+      </div>
+      <div class="field">
+        <label>To Value</label>
+        <input type="number" id="to3">
+      </div>
+    </div>
+    <button class="primary" onclick="calc3()">Calculate</button>
+    <div class="result" id="result3"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="bmi-calculator.html">BMI Calculator</a>
+    <a href="age-calculator.html">Age Calculator</a>
+    <a href="discount-calculator.html">Discount Calculator</a>
+    <a href="tip-calculator.html">Tip Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>Percentage Formulas Explained</h2>
+    <p>This page covers the three most common percentage questions people search for: finding what a percentage of a number is (X% of Y), finding what percentage one number is of another (X is what % of Y), and finding the percentage change between two values. These formulas are useful for everything from calculating discounts and tips to analyzing exam scores and business growth.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>How do I calculate a discount using this tool?</h3>
+      <p>Use the first calculator: enter the discount percentage and the original price to find the discount amount, then subtract it from the original price for the final cost.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's the difference between percentage change and percentage points?</h3>
+      <p>Percentage change (calculated here) measures relative change between two values. Percentage points measure the absolute difference between two percentages — a distinct calculation not covered by this tool.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I use negative numbers?</h3>
+      <p>The "From/To" percentage change calculator supports negative changes (decreases) automatically — it will indicate whether the result is an increase or decrease.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calc1() {
+  const p = parseFloat(document.getElementById('p1').value);
+  const v = parseFloat(document.getElementById('v1').value);
+  const box = document.getElementById('result1');
+  if (isNaN(p) || isNaN(v)) { box.className='result show'; box.innerHTML='Please enter valid numbers.'; return; }
+  box.className = 'result show';
+  box.innerHTML = `${p}% of ${v} is <strong>${(p/100*v).toFixed(2)}</strong>`;
+}
+function calc2() {
+  const x = parseFloat(document.getElementById('x2').value);
+  const y = parseFloat(document.getElementById('y2').value);
+  const box = document.getElementById('result2');
+  if (isNaN(x) || !y) { box.className='result show'; box.innerHTML='Please enter valid numbers.'; return; }
+  box.className = 'result show';
+  box.innerHTML = `${x} is <strong>${(x/y*100).toFixed(2)}%</strong> of ${y}`;
+}
+function calc3() {
+  const from = parseFloat(document.getElementById('from3').value);
+  const to = parseFloat(document.getElementById('to3').value);
+  const box = document.getElementById('result3');
+  if (!from || isNaN(to)) { box.className='result show'; box.innerHTML='Please enter valid numbers.'; return; }
+  const change = ((to - from) / from) * 100;
+  const dir = change >= 0 ? 'increase' : 'decrease';
+  box.className = 'result show';
+  box.innerHTML = `That is a <strong>${Math.abs(change).toFixed(2)}% ${dir}</strong>`;
+}
+</script>
+
+</body>
+</html>

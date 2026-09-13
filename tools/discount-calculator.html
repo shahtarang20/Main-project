@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discount Calculator - Find Sale Price Free</title>
+<meta name="description" content="Calculate the discounted price and amount saved instantly from any percentage off. Free, no signup.">
+<meta property="og:title" content="Discount Calculator - QuickCalc">
+<meta property="og:description" content="Find the final sale price and savings instantly, free.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Discount Calculator","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Discount Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Discount Calculator</h1>
+    <p>Find out how much you'll pay and save on a sale item.</p>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="price">Original Price</label>
+        <input type="number" id="price" placeholder="e.g. 2000">
+      </div>
+      <div class="field">
+        <label for="discount">Discount (%)</label>
+        <input type="number" id="discount" placeholder="e.g. 25">
+      </div>
+    </div>
+    <button class="primary" onclick="calculateDiscount()">Calculate</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="gst-calculator.html">GST Calculator</a>
+    <a href="percentage-calculator.html">Percentage Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How Discounts Are Calculated</h2>
+    <p>The final sale price is found by subtracting the discount amount (original price × discount percentage) from the original price. This is one of the most common everyday percentage calculations, useful when shopping, comparing sale offers, or estimating savings during festival and seasonal sales.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>How do I calculate stacked discounts (e.g. 20% + 10%)?</h3>
+      <p>Stacked discounts are applied sequentially, not added together. Calculate the first discount, then apply the second discount to the already-discounted price — run this calculator twice for an accurate result.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this include tax?</h3>
+      <p>No — this shows the discounted price only. Use our <a href="gst-calculator.html">GST Calculator</a> to add applicable tax on top of the discounted price.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calculateDiscount() {
+  const price = parseFloat(document.getElementById('price').value);
+  const discount = parseFloat(document.getElementById('discount').value);
+  const box = document.getElementById('result');
+
+  if (!price || price <= 0 || discount == null || discount < 0) {
+    box.className = 'result show';
+    box.innerHTML = 'Please enter valid values.';
+    return;
+  }
+
+  const savedAmount = price * (discount / 100);
+  const finalPrice = price - savedAmount;
+
+  box.className = 'result show';
+  box.innerHTML = `You Save: ${savedAmount.toFixed(2)}<br><strong>Final Price: ${finalPrice.toFixed(2)}</strong>`;
+}
+</script>
+
+</body>
+</html>

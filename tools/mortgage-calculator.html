@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mortgage Calculator - Monthly Home Loan Payment Free</title>
+<meta name="description" content="Free mortgage calculator to estimate your monthly home loan payment, including principal, interest, taxes and insurance.">
+<meta property="og:title" content="Mortgage Calculator - QuickCalc">
+<meta property="og:description" content="Estimate your monthly home loan payment instantly, free.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Mortgage Calculator","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Mortgage Calculator</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Mortgage Calculator</h1>
+    <p>Estimate your total monthly home loan payment including principal, interest, property tax, and insurance.</p>
+
+    <div class="field">
+      <label for="price">Home Price</label>
+      <input type="number" id="price" placeholder="e.g. 300000">
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="downpayment">Down Payment</label>
+        <input type="number" id="downpayment" placeholder="e.g. 60000">
+      </div>
+      <div class="field">
+        <label for="rate">Interest Rate (% per year)</label>
+        <input type="number" id="rate" placeholder="e.g. 6.5" step="0.01">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="term">Loan Term (Years)</label>
+        <input type="number" id="term" placeholder="e.g. 30">
+      </div>
+      <div class="field">
+        <label for="taxinsurance">Annual Tax + Insurance</label>
+        <input type="number" id="taxinsurance" placeholder="e.g. 3000">
+      </div>
+    </div>
+    <button class="primary" onclick="calculateMortgage()">Calculate Payment</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="emi-calculator.html">EMI Calculator</a>
+    <a href="compound-interest-calculator.html">Compound Interest Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>How Mortgage Payments Are Calculated</h2>
+    <p>Your monthly mortgage payment is made up of Principal & Interest (P&I), calculated from your loan amount (home price minus down payment), interest rate, and term, plus an estimated monthly share of annual property tax and homeowners insurance. This calculator does not include private mortgage insurance (PMI) or HOA fees, which may apply depending on your down payment size and property type.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What down payment do I need to avoid PMI?</h3>
+      <p>In many markets, a down payment of at least 20% of the home price avoids private mortgage insurance. This calculator does not add PMI automatically — factor it in separately if your down payment is below that threshold.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this include closing costs?</h3>
+      <p>No — closing costs are one-time fees paid at purchase and are not part of the recurring monthly payment estimated here.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is my estimate different from my lender's quote?</h3>
+      <p>Lenders factor in your credit score, exact loan product, PMI, HOA fees, and local tax rates, which can shift the real payment. Use this as a starting estimate, not a final quote.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+function calculateMortgage() {
+  const price = parseFloat(document.getElementById('price').value);
+  const down = parseFloat(document.getElementById('downpayment').value) || 0;
+  const annualRate = parseFloat(document.getElementById('rate').value);
+  const years = parseFloat(document.getElementById('term').value);
+  const taxIns = parseFloat(document.getElementById('taxinsurance').value) || 0;
+  const box = document.getElementById('result');
+
+  const principal = price - down;
+  if (!price || !annualRate || !years || principal <= 0 || annualRate <= 0 || years <= 0) {
+    box.className = 'result show';
+    box.innerHTML = 'Please enter valid positive numbers.';
+    return;
+  }
+
+  const r = annualRate / 12 / 100;
+  const n = years * 12;
+  const pAndI = (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const monthlyTaxIns = taxIns / 12;
+  const totalMonthly = pAndI + monthlyTaxIns;
+
+  box.className = 'result show';
+  box.innerHTML = `
+    Principal & Interest: ${pAndI.toFixed(2)}<br>
+    Monthly Tax + Insurance: ${monthlyTaxIns.toFixed(2)}<br>
+    <strong>Total Monthly Payment: ${totalMonthly.toFixed(2)}</strong>
+  `;
+}
+</script>
+
+</body>
+</html>

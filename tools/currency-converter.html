@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Converter - Free Real-Time Exchange Rate Tool</title>
+<meta name="description" content="Convert between world currencies using live exchange rates. Free, instant, no signup.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../index.html" class="logo">QuickCalc</a>
+  <nav class="main-nav">
+    <a href="../index.html">Home</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / Currency Converter</nav>
+
+<main class="container">
+  <div class="card">
+    <h1>Currency Converter</h1>
+    <p>Convert between world currencies using live exchange rates.</p>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" value="1">
+      </div>
+      <div class="field">
+        <label for="from">From</label>
+        <select id="from"></select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="to">To</label>
+      <select id="to"></select>
+    </div>
+    <button class="primary" onclick="convertCurrency()">Convert</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="ad-slot">Ad space</div>
+
+  <div class="card related">
+    <strong>Related tools:</strong><br>
+    <a href="unit-converter.html">Unit Converter</a>
+    <a href="emi-calculator.html">EMI Calculator</a>
+  </div>
+
+  <div class="card content-block">
+    <h2>About Our Exchange Rates</h2>
+    <p>This converter fetches live exchange rate data from a public exchange rate API when you click "Convert." Rates are updated regularly by the data provider but may lag slightly behind the real-time interbank rates used by banks or payment processors, and typically do not include the markup or fees a bank or money transfer service would charge on an actual transaction.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Why is the rate I see different from my bank's rate?</h3>
+      <p>Banks and money transfer services add a margin on top of the mid-market rate shown here, and their rates update on their own schedule. This tool is best used to get a quick reference point, not the exact rate you'll receive from a provider.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I need an internet connection for this tool?</h3>
+      <p>Yes — unlike our other calculators, currency conversion requires fetching live rates from an external data source, so it needs an active internet connection.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Which currencies are supported?</h3>
+      <p>We currently support 15 major world currencies including USD, EUR, GBP, INR, JPY, AUD, and more, with additional currencies planned.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms of Use</a>
+    <a href="../disclaimer.html">Disclaimer</a>
+  </div>
+  &copy; 2026 QuickCalc
+</footer>
+
+<script>
+const CURRENCIES = ["USD","EUR","GBP","INR","JPY","AUD","CAD","CHF","CNY","SGD","AED","ZAR","BRL","MXN","NZD"];
+const fromSel = document.getElementById('from');
+const toSel = document.getElementById('to');
+
+CURRENCIES.forEach(c => {
+  fromSel.innerHTML += `<option value="${c}">${c}</option>`;
+  toSel.innerHTML += `<option value="${c}">${c}</option>`;
+});
+fromSel.value = "USD";
+toSel.value = "INR";
+
+async function convertCurrency() {
+  const amount = parseFloat(document.getElementById('amount').value);
+  const from = fromSel.value;
+  const to = toSel.value;
+  const resultBox = document.getElementById('result');
+
+  if (!amount || amount <= 0) {
+    resultBox.className = 'result show';
+    resultBox.innerHTML = 'Please enter a valid amount.';
+    return;
+  }
+
+  resultBox.className = 'result show';
+  resultBox.innerHTML = 'Fetching latest rates...';
+
+  try {
+    const res = await fetch(`https://api.exchangerate-api.com/v4/latest/${from}`);
+    const data = await res.json();
+    const rate = data.rates[to];
+    const converted = amount * rate;
+    resultBox.innerHTML = `${amount} ${from} = <strong>${converted.toFixed(2)} ${to}</strong><br><span style="font-weight:400;font-size:0.85rem;">1 ${from} = ${rate} ${to}</span>`;
+  } catch (e) {
+    resultBox.innerHTML = 'Could not fetch live rates right now. Please try again later.';
+  }
+}
+</script>
+
+</body>
+</html>
